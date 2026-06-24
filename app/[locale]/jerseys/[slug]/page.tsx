@@ -28,118 +28,190 @@ export default async function JerseyPage({
   if (!jersey) notFound()
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <Link
-        href={jersey.team ? `/${locale}/teams/${jersey.team.slug}` : `/${locale}/shop`}
-        className="text-sm text-indigo-600 hover:underline mb-8 inline-block"
-      >
-        {jersey.team ? t[locale].backToTeam : t[locale].backToShop}
-      </Link>
+    <div className="min-h-screen bg-background">
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        {/* Image */}
-        <div className="relative aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 shadow-sm">
-          {jersey.imageUrl ? (
-            <Image
-              src={jersey.imageUrl}
-              alt={jersey.name}
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              priority
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-8xl">👕</div>
-          )}
-          <div className={`absolute top-4 right-4 px-3 py-1.5 rounded-full text-sm font-bold uppercase tracking-wide shadow ${
-            jersey.kitType === 'HOME' ? 'bg-indigo-600 text-white' : 'bg-gray-900 text-white'
-          }`}>
-            {jersey.kitType === 'HOME' ? t[locale].homeKit : t[locale].awayKit}
-          </div>
-        </div>
-
-        {/* Details */}
-        <div className="flex flex-col justify-start pt-2">
-          {jersey.team && (
-            <Link
-              href={`/${locale}/teams/${jersey.team.slug}`}
-              className="inline-flex items-center gap-2 text-sm font-medium text-indigo-500 hover:underline mb-3"
-            >
-              <span className="text-2xl">{jersey.team.flagEmoji}</span>
-              <span>{jersey.team.name}</span>
-            </Link>
-          )}
-
-          <h1 className="text-3xl font-bold text-gray-900 mb-2 leading-tight">{jersey.name}</h1>
-
-          <div className="text-3xl font-extrabold text-gray-900 mb-6">
-            {jersey.currency} {jersey.price.toFixed(2)}
-          </div>
-
-          {/* Sizes */}
-          <div className="mb-6">
-            <p className="text-sm font-semibold text-gray-700 mb-3">{t[locale].sizes}</p>
-            <div className="flex flex-wrap gap-2">
-              {jersey.sizes.map((size) => (
-                <button
-                  key={size}
-                  className="px-4 py-2 border-2 border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:border-indigo-500 hover:text-indigo-600 transition-colors"
-                >
-                  {size}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Description */}
-          {jersey.description?.html && (
-            <div
-              className="text-gray-600 text-base mb-6 prose prose-sm max-w-none"
-              dangerouslySetInnerHTML={{ __html: jersey.description.html }}
-            />
-          )}
-
-          {/* Material */}
-          {jersey.material && (
-            <div className="flex items-start gap-2 mb-6 p-3 bg-gray-50 rounded-lg">
-              <span className="text-sm font-semibold text-gray-600 shrink-0">{t[locale].material}:</span>
-              <span className="text-sm text-gray-600">{jersey.material}</span>
-            </div>
-          )}
-
-          <button className="mt-auto bg-indigo-600 text-white font-bold px-8 py-4 rounded-xl hover:bg-indigo-700 active:bg-indigo-800 transition-colors text-lg w-full shadow-lg shadow-indigo-200">
-            {t[locale].addToCart}
-          </button>
+      {/* Back nav */}
+      <div className="border-b border-[rgba(255,255,255,0.05)] bg-[#0c0c0c] py-3 px-4">
+        <div className="max-w-7xl mx-auto">
+          <Link
+            href={jersey.team ? `/${locale}/teams/${jersey.team.slug}` : `/${locale}/shop`}
+            className="inline-flex items-center gap-2 text-zinc-600 hover:text-gold transition-colors text-[10px] font-bold uppercase tracking-widest"
+          >
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            {jersey.team ? t[locale].backToTeam : t[locale].backToShop}
+          </Link>
         </div>
       </div>
 
-      {/* Related Jerseys */}
-      {jersey.relatedJerseys && jersey.relatedJerseys.length > 0 && (
-        <div className="mt-16">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">{t[locale].relatedProducts}</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {jersey.relatedJerseys.map((rel) => (
-              <Link key={rel.id} href={`/${locale}/jerseys/${rel.slug}`} className="group block">
-                <div className="relative aspect-square rounded-xl overflow-hidden bg-gray-50 shadow-sm group-hover:shadow-md transition-shadow">
-                  {rel.imageUrl ? (
-                    <Image src={rel.imageUrl} alt={rel.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="25vw" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-5xl">👕</div>
-                  )}
-                  <div className={`absolute top-2 right-2 px-2 py-0.5 rounded-full text-xs font-bold ${rel.kitType === 'HOME' ? 'bg-indigo-600 text-white' : 'bg-gray-900 text-white'}`}>
-                    {rel.kitType === 'HOME' ? t[locale].homeKit : t[locale].awayKit}
-                  </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-16">
+
+          {/* ─── IMAGE PANEL ──────────────────────────────── */}
+          <div className="relative">
+            <div className="sticky top-24">
+              <div className="relative aspect-square bg-[#0e0e0e] border border-[rgba(255,255,255,0.06)] overflow-hidden">
+                {jersey.imageUrl ? (
+                  <Image
+                    src={jersey.imageUrl}
+                    alt={jersey.name}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    priority
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-8xl opacity-10">👕</div>
+                )}
+
+                {/* Kit type */}
+                <div className={`absolute top-4 left-4 px-3 py-1 text-[9px] font-black uppercase tracking-[0.2em] ${
+                  jersey.kitType === 'HOME'
+                    ? 'bg-gold text-black'
+                    : 'bg-white/10 backdrop-blur-sm text-white/80 border border-white/15'
+                }`}>
+                  {jersey.kitType === 'HOME' ? t[locale].homeKit : t[locale].awayKit}
                 </div>
-                <div className="mt-2 px-1">
-                  {rel.team && <p className="text-xs text-gray-400">{rel.team.flagEmoji} {rel.team.name}</p>}
-                  <p className="text-sm font-semibold text-gray-800 truncate">{rel.name}</p>
-                  <p className="text-sm font-bold text-gray-900">{rel.currency} {rel.price.toFixed(2)}</p>
-                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ─── PURCHASE PANEL ───────────────────────────── */}
+          <div className="pt-4 lg:pt-0">
+
+            {/* Team */}
+            {jersey.team && (
+              <Link
+                href={`/${locale}/teams/${jersey.team.slug}`}
+                className="inline-flex items-center gap-2 text-zinc-600 hover:text-gold transition-colors mb-4 group"
+              >
+                <span className="text-2xl">{jersey.team.flagEmoji}</span>
+                <span className="text-[10px] uppercase tracking-[0.2em] font-black group-hover:text-gold transition-colors">
+                  {jersey.team.name}
+                </span>
               </Link>
-            ))}
+            )}
+
+            {/* Name */}
+            <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tighter text-white leading-tight mb-2">
+              {jersey.name}
+            </h1>
+
+            {/* Price */}
+            <div className="text-3xl font-black text-gold mb-8">
+              {jersey.currency} {jersey.price.toFixed(2)}
+            </div>
+
+            {/* Divider */}
+            <div className="border-t border-[rgba(255,255,255,0.06)] mb-8" />
+
+            {/* Sizes */}
+            <div className="mb-8">
+              <div className="flex items-center justify-between mb-4">
+                <p className="text-[10px] uppercase tracking-[0.25em] font-black text-zinc-500">{t[locale].sizes}</p>
+                <span className="text-[10px] text-zinc-700 uppercase tracking-wider cursor-pointer hover:text-zinc-500 transition-colors">Size Guide</span>
+              </div>
+              <div className="grid grid-cols-5 gap-2">
+                {jersey.sizes.map((size) => (
+                  <button
+                    key={size}
+                    className="border border-[rgba(255,255,255,0.08)] py-3 text-xs font-black text-zinc-500 uppercase tracking-wider hover:border-gold/50 hover:text-white transition-all duration-200 hover:bg-gold/5"
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Material */}
+            {jersey.material && (
+              <div className="flex items-center gap-3 mb-8 py-4 border-t border-b border-[rgba(255,255,255,0.05)]">
+                <span className="text-[10px] uppercase tracking-widest text-zinc-700 font-black shrink-0">{t[locale].material}</span>
+                <span className="text-xs text-zinc-500">{jersey.material}</span>
+              </div>
+            )}
+
+            {/* Description */}
+            {jersey.description?.html && (
+              <div
+                className="prose-dark text-zinc-600 text-sm leading-relaxed mb-8"
+                dangerouslySetInnerHTML={{ __html: jersey.description.html }}
+              />
+            )}
+
+            {/* Add to cart */}
+            <button className="w-full bg-gold text-black font-black py-4 text-sm uppercase tracking-[0.2em] hover:bg-gold-light transition-all duration-200 mb-3 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(201,168,76,0.3)] active:translate-y-0">
+              {t[locale].addToCart}
+            </button>
+            <button className="w-full border border-[rgba(255,255,255,0.12)] text-zinc-400 font-black py-4 text-sm uppercase tracking-[0.2em] hover:border-white/25 hover:text-white transition-all duration-200">
+              {t[locale].wishlist ?? 'Save to Wishlist'}
+            </button>
+
+            {/* Specs */}
+            <div className="mt-8 space-y-3">
+              {[
+                { icon: '✓', text: 'Official FIFA Licensed Product' },
+                { icon: '✓', text: 'Free shipping on orders over €75' },
+                { icon: '✓', text: '30-day returns' },
+              ].map((item) => (
+                <div key={item.text} className="flex items-center gap-3 text-xs text-zinc-700">
+                  <span className="text-gold font-black">{item.icon}</span>
+                  <span>{item.text}</span>
+                </div>
+              ))}
+            </div>
+
           </div>
         </div>
-      )}
+
+        {/* ─── RELATED JERSEYS ────────────────────────────── */}
+        {jersey.relatedJerseys && jersey.relatedJerseys.length > 0 && (
+          <div className="mt-24 border-t border-[rgba(255,255,255,0.06)] pt-16">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-gold font-black mb-3">You May Also Like</p>
+            <h2 className="text-2xl font-black uppercase tracking-tight text-white mb-8">
+              {t[locale].relatedProducts}
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {jersey.relatedJerseys.map((rel, i) => (
+                <Link key={rel.id} href={`/${locale}/jerseys/${rel.slug}`} className="group block">
+                  <div
+                    className="animate-fade-up"
+                    style={{ animationDelay: `${i * 60}ms`, animationFillMode: 'both', opacity: 0 }}
+                  >
+                    <div className="relative aspect-square bg-[#0e0e0e] border border-[rgba(255,255,255,0.06)] overflow-hidden mb-3 group-hover:border-gold/20 transition-all duration-300">
+                      {rel.imageUrl ? (
+                        <Image
+                          src={rel.imageUrl}
+                          alt={rel.name}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          sizes="25vw"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-4xl opacity-10">👕</div>
+                      )}
+                      <div className={`absolute top-2 left-2 px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider ${
+                        rel.kitType === 'HOME' ? 'bg-gold text-black' : 'bg-white/10 text-white border border-white/15'
+                      }`}>
+                        {rel.kitType === 'HOME' ? t[locale].homeKit : t[locale].awayKit}
+                      </div>
+                    </div>
+                    {rel.team && (
+                      <p className="text-[9px] uppercase tracking-widest text-zinc-600 mb-0.5">
+                        {rel.team.flagEmoji} {rel.team.name}
+                      </p>
+                    )}
+                    <p className="text-xs font-bold text-zinc-400 group-hover:text-gold transition-colors truncate mb-1">{rel.name}</p>
+                    <p className="text-sm font-black text-gold">{rel.currency} {rel.price.toFixed(2)}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+      </div>
     </div>
   )
 }

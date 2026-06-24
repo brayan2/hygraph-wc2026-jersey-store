@@ -49,6 +49,7 @@ export const t: Record<Locale, Record<string, string>> = {
     allCollections: 'All Collections',
     browseByContinent: 'Browse by Region',
     productDetailPage: 'Product Details',
+    wishlist: 'Save to Wishlist',
   },
   de: {
     home: 'Start',
@@ -79,6 +80,7 @@ export const t: Record<Locale, Record<string, string>> = {
     allCollections: 'Alle Kollektionen',
     browseByContinent: 'Nach Region durchsuchen',
     productDetailPage: 'Produktdetails',
+    wishlist: 'Zur Wunschliste hinzufügen',
   },
   fr: {
     home: 'Accueil',
@@ -109,5 +111,6 @@ export const t: Record<Locale, Record<string, string>> = {
     allCollections: 'Toutes les collections',
     browseByContinent: 'Parcourir par région',
     productDetailPage: 'Détails du produit',
+    wishlist: 'Ajouter à la liste de souhaits',
   },
 }

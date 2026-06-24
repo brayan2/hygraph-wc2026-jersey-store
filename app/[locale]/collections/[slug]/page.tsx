@@ -29,74 +29,110 @@ export default async function CollectionPage({
   if (!collection) notFound()
 
   return (
-    <div>
-      {/* Hero */}
-      <div className="relative h-64 sm:h-80 bg-indigo-900 overflow-hidden">
+    <div className="min-h-screen bg-background">
+
+      {/* ─── CINEMATIC HERO ─────────────────────────────── */}
+      <div className="relative h-[55vh] sm:h-[65vh] bg-[#050505] overflow-hidden">
         {collection.heroImageUrl && (
           <Image
             src={collection.heroImageUrl}
             alt={collection.name}
             fill
-            className="object-cover opacity-40"
+            className="object-cover opacity-50"
             sizes="100vw"
             priority
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-        <div className="absolute inset-0 flex flex-col justify-end px-6 pb-8 max-w-7xl mx-auto">
-          <Link href={`/${locale}/collections`} className="text-white/70 hover:text-white text-sm mb-3 inline-block transition-colors">
-            {t[locale].backToCollection}
-          </Link>
-          <div className="flex items-center gap-3 mb-2">
-            <span className="bg-white/20 backdrop-blur-sm text-white text-xs font-medium px-3 py-1 rounded-full">
+        {/* Gradients */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/40 to-transparent" />
+
+        {/* Content */}
+        <div className="absolute inset-0 flex flex-col justify-end">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 w-full">
+            <Link
+              href={`/${locale}/collections`}
+              className="inline-flex items-center gap-2 text-zinc-600 hover:text-gold transition-colors text-[10px] font-bold uppercase tracking-widest mb-6"
+            >
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+              {t[locale].backToCollection}
+            </Link>
+
+            <p className="text-[10px] uppercase tracking-[0.3em] text-gold font-black mb-3">
               {continentLabels[locale][collection.continent]}
-            </span>
-          </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-white">{collection.name}</h1>
-          <div className="flex gap-3 mt-2 text-white/70 text-sm">
-            <span>{collection.teams.length} {t[locale].teamCount}</span>
-            <span>·</span>
-            <span>{collection.jerseys.length} {t[locale].jerseyCount}</span>
+            </p>
+
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tighter text-white leading-[0.9] mb-4">
+              {collection.name}
+            </h1>
+
+            <div className="flex items-center gap-4 text-zinc-600 text-[10px] uppercase tracking-[0.2em] font-bold">
+              <span>{collection.teams.length} {t[locale].teamCount}</span>
+              <span className="text-zinc-800">·</span>
+              <span>{collection.jerseys.length} {t[locale].jerseyCount}</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      {/* ─── BODY ────────────────────────────────────────── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
         {/* Description */}
         {collection.description?.html && (
           <div
-            className="prose prose-lg max-w-3xl mb-10 text-gray-600"
+            className="prose-dark max-w-2xl mb-12 text-zinc-500 text-sm leading-relaxed"
             dangerouslySetInnerHTML={{ __html: collection.description.html }}
           />
         )}
 
-        {/* Teams in this collection */}
-        <div className="mb-10">
-          <h2 className="text-lg font-semibold text-gray-700 mb-4">{t[locale].teams}</h2>
-          <div className="flex flex-wrap gap-3">
+        {/* Teams */}
+        <div className="mb-12">
+          <p className="text-[10px] uppercase tracking-[0.25em] text-zinc-700 font-black mb-4">
+            {t[locale].teams}
+          </p>
+          <div className="flex flex-wrap gap-2">
             {collection.teams.map((team) => (
               <Link
                 key={team.id}
                 href={`/${locale}/teams/${team.slug}`}
-                className="flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 hover:border-indigo-400 hover:text-indigo-600 transition-colors text-sm font-medium text-gray-700"
+                className="inline-flex items-center gap-2 border border-[rgba(255,255,255,0.07)] hover:border-gold/30 hover:text-gold px-4 py-2 text-xs font-bold text-zinc-500 uppercase tracking-wider transition-all duration-200"
               >
-                <span className="text-lg">{team.flagEmoji}</span>
+                <span className="text-base">{team.flagEmoji}</span>
                 <span>{team.name}</span>
-                <span className="text-xs text-gray-400">({team.confederation})</span>
+                <span className="text-zinc-700 text-[10px]">{team.confederation}</span>
               </Link>
             ))}
           </div>
         </div>
 
+        {/* Divider */}
+        <div className="gold-line mb-12" />
+
         {/* Jerseys grid */}
         {collection.jerseys.length === 0 ? (
-          <p className="text-gray-500 text-center py-16">{t[locale].noJerseys}</p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {collection.jerseys.map((jersey) => (
-              <JerseyCard key={jersey.id} jersey={jersey} locale={locale} />
-            ))}
+          <div className="text-center py-20">
+            <p className="text-zinc-700 text-sm uppercase tracking-widest">{t[locale].noJerseys}</p>
           </div>
+        ) : (
+          <>
+            <p className="text-[10px] uppercase tracking-[0.25em] text-zinc-700 font-black mb-6">
+              {collection.jerseys.length} {t[locale].jerseyCount}
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {collection.jerseys.map((jersey, i) => (
+                <div
+                  key={jersey.id}
+                  className="animate-fade-up"
+                  style={{ animationDelay: `${i * 60}ms`, animationFillMode: 'both', opacity: 0 }}
+                >
+                  <JerseyCard jersey={jersey} locale={locale} />
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>

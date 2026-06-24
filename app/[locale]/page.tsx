@@ -15,11 +15,14 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
 
   if (!page) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center text-center px-4">
-        <div>
-          <p className="text-4xl mb-4">⚽</p>
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">World Cup 2026 Jersey Store</h1>
-          <p className="text-gray-500">Content loading — check back soon.</p>
+      <div className="min-h-screen flex items-center justify-center text-center px-4">
+        <div className="animate-fade-up">
+          <p className="text-5xl mb-6">⚽</p>
+          <h1 className="text-3xl font-black text-white uppercase tracking-tight mb-3">
+            World Cup 2026<br />
+            <span className="text-gradient-gold">Jersey Store</span>
+          </h1>
+          <p className="text-zinc-600 text-sm uppercase tracking-widest">Content loading — check back soon</p>
         </div>
       </div>
     )
@@ -28,57 +31,120 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   const hero = page.hero
 
   return (
-    <div>
-      {/* CMS-driven Hero */}
-      <section className="relative bg-gradient-to-br from-indigo-900 via-indigo-800 to-purple-900 text-white overflow-hidden min-h-[480px] flex items-center">
+    <div className="bg-background">
+
+      {/* ─── HERO ─────────────────────────────────────────── */}
+      <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden bg-[#060606]">
         {hero?.imageUrl && (
-          <Image src={hero.imageUrl} alt="" fill className="object-cover opacity-20" sizes="100vw" priority />
+          <>
+            <Image
+              src={hero.imageUrl}
+              alt=""
+              fill
+              className="object-cover opacity-25"
+              sizes="100vw"
+              priority
+            />
+            {/* Vignette */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.85)_100%)]" />
+          </>
         )}
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/80 to-purple-900/60" />
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center w-full">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
+
+        {/* Hero content */}
+        <div className="relative z-10 text-center px-4 max-w-6xl mx-auto">
+          {/* Badge */}
           {hero?.badgeText && (
-            <div className="inline-block bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 text-sm font-medium mb-6">
-              🏆 {hero.badgeText}
+            <div className="animate-fade-up inline-flex items-center gap-2 border border-gold/30 bg-gold/10 px-4 py-1.5 mb-8">
+              <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
+              <span className="text-gold text-[10px] font-black uppercase tracking-[0.3em]">
+                {hero.badgeText}
+              </span>
             </div>
           )}
-          <h1 className="text-5xl sm:text-6xl font-extrabold mb-4 tracking-tight">
-            {hero?.headline || page.title}
+
+          {/* Headline */}
+          <h1 className="animate-fade-up delay-100 text-5xl sm:text-7xl md:text-8xl font-black uppercase tracking-tighter leading-[0.9] mb-6">
+            <span className="text-white">{hero?.headline || page.title}</span>
           </h1>
+
+          {/* Subheading */}
           {hero?.subheading && (
-            <p className="text-xl text-indigo-200 mb-10 max-w-2xl mx-auto">{hero.subheading}</p>
+            <p className="animate-fade-up delay-200 text-zinc-400 text-base sm:text-lg mb-10 max-w-xl mx-auto leading-relaxed">
+              {hero.subheading}
+            </p>
           )}
-          {hero?.ctaLabel && hero.ctaUrl && (
+
+          {/* CTA */}
+          <div className="animate-fade-up delay-300 flex flex-col sm:flex-row items-center justify-center gap-4">
+            {hero?.ctaLabel && hero.ctaUrl && (
+              <Link
+                href={`/${locale}${hero.ctaUrl}`}
+                className="group inline-flex items-center gap-3 bg-gold text-black font-black px-8 py-4 text-sm uppercase tracking-[0.15em] hover:bg-gold-light transition-all duration-200 hover:-translate-y-0.5"
+              >
+                {hero.ctaLabel}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </Link>
+            )}
             <Link
-              href={`/${locale}${hero.ctaUrl}`}
-              className="inline-block bg-white text-indigo-900 font-bold px-10 py-4 rounded-full hover:bg-indigo-50 transition-colors text-lg shadow-xl"
+              href={`/${locale}/collections`}
+              className="inline-flex items-center gap-2 border border-white/15 text-white/70 hover:text-white hover:border-white/30 px-8 py-4 text-sm uppercase tracking-[0.15em] font-bold transition-all duration-200"
             >
-              {hero.ctaLabel}
+              {t[locale].allCollections}
             </Link>
-          )}
+          </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-fade-in delay-700">
+          <span className="text-zinc-700 text-[9px] uppercase tracking-[0.3em] font-bold">Scroll</span>
+          <div className="w-px h-10 bg-gradient-to-b from-zinc-700 to-transparent" />
         </div>
       </section>
 
-      {/* Promotional Banners */}
+      {/* ─── STATS BAR ────────────────────────────────────── */}
+      <section className="border-y border-[rgba(255,255,255,0.06)] bg-[#0c0c0c]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-[rgba(255,255,255,0.06)]">
+            {[
+              { num: '32', label: 'Nations' },
+              { num: '10', label: 'Teams' },
+              { num: '20', label: 'Jerseys' },
+              { num: '5', label: 'Collections' },
+            ].map((s) => (
+              <div key={s.label} className="py-6 px-6 sm:px-10 text-center">
+                <div className="text-2xl sm:text-3xl font-black text-gradient-gold mb-1">{s.num}</div>
+                <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-600 font-bold">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── PROMOTIONAL BANNERS ──────────────────────────── */}
       {page.promotionalBanners.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {page.promotionalBanners.map((banner, i) => (
               <div
                 key={i}
-                className="relative overflow-hidden rounded-2xl p-6 flex items-center justify-between gap-4 text-white"
-                style={{ backgroundColor: banner.backgroundColor || '#4F46E5' }}
+                className="relative overflow-hidden p-8 flex items-center justify-between gap-6 border border-[rgba(255,255,255,0.07)] hover:border-gold/20 transition-all duration-300 group"
+                style={{ backgroundColor: banner.backgroundColor || '#111111' }}
               >
                 {banner.imageUrl && (
-                  <Image src={banner.imageUrl} alt="" fill className="object-cover opacity-20" sizes="50vw" />
+                  <Image src={banner.imageUrl} alt="" fill className="object-cover opacity-15 group-hover:opacity-25 transition-opacity duration-500" sizes="50vw" />
                 )}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent" />
                 <div className="relative z-10">
-                  <p className="font-bold text-lg leading-tight">{banner.headline}</p>
-                  {banner.description && <p className="text-sm text-white/80 mt-1">{banner.description}</p>}
+                  <p className="font-black text-white text-lg uppercase tracking-tight leading-tight mb-1">{banner.headline}</p>
+                  {banner.description && <p className="text-sm text-zinc-500 mt-1 leading-relaxed">{banner.description}</p>}
                 </div>
                 {banner.ctaLabel && banner.ctaUrl && (
                   <Link
                     href={`/${locale}${banner.ctaUrl}`}
-                    className="relative z-10 shrink-0 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white text-sm font-semibold px-4 py-2 rounded-full transition-colors whitespace-nowrap"
+                    className="relative z-10 shrink-0 border border-gold/50 text-gold hover:bg-gold hover:text-black text-xs font-black px-5 py-2.5 uppercase tracking-wider transition-all duration-200 whitespace-nowrap"
                   >
                     {banner.ctaLabel}
                   </Link>
@@ -89,41 +155,102 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
         </section>
       )}
 
-      {/* Featured Collections */}
+      {/* ─── FEATURED COLLECTIONS ─────────────────────────── */}
       {page.featuredCollections.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold text-gray-900">{t[locale].featuredCollections}</h2>
-            <Link href={`/${locale}/collections`} className="text-sm font-medium text-indigo-600 hover:underline">
-              {t[locale].viewAll} →
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          {/* Section header */}
+          <div className="flex items-end justify-between mb-10">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-gold font-black mb-2">
+                {t[locale].browseByContinent}
+              </p>
+              <h2 className="text-3xl sm:text-4xl font-black text-white uppercase tracking-tight leading-none">
+                {t[locale].featuredCollections}
+              </h2>
+            </div>
+            <Link
+              href={`/${locale}/collections`}
+              className="hidden sm:inline-flex items-center gap-2 text-zinc-600 hover:text-gold transition-colors text-xs font-black uppercase tracking-widest group"
+            >
+              {t[locale].viewAll}
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="group-hover:translate-x-0.5 transition-transform">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
             </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {page.featuredCollections.map((col) => (
-              <CollectionCard key={col.id} collection={col} locale={locale} />
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {page.featuredCollections.map((col, i) => (
+              <div
+                key={col.id}
+                className="animate-fade-up"
+                style={{ animationDelay: `${i * 80}ms`, animationFillMode: 'both', opacity: 0 }}
+              >
+                <CollectionCard collection={col} locale={locale} />
+              </div>
             ))}
           </div>
         </section>
       )}
 
-      {/* Featured Jerseys */}
+      {/* ─── FEATURED JERSEYS ─────────────────────────────── */}
       {page.featuredJerseys.length > 0 && (
-        <section className="bg-gray-50 py-14">
+        <section className="bg-[#0c0c0c] border-t border-[rgba(255,255,255,0.05)] py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-bold text-gray-900">{t[locale].featuredJerseys}</h2>
-              <Link href={`/${locale}/shop`} className="text-sm font-medium text-indigo-600 hover:underline">
-                {t[locale].viewAll} →
+            <div className="flex items-end justify-between mb-10">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.3em] text-gold font-black mb-2">
+                  New Arrivals
+                </p>
+                <h2 className="text-3xl sm:text-4xl font-black text-white uppercase tracking-tight leading-none">
+                  {t[locale].featuredJerseys}
+                </h2>
+              </div>
+              <Link
+                href={`/${locale}/shop`}
+                className="hidden sm:inline-flex items-center gap-2 text-zinc-600 hover:text-gold transition-colors text-xs font-black uppercase tracking-widest group"
+              >
+                {t[locale].viewAll}
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="group-hover:translate-x-0.5 transition-transform">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
               </Link>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {page.featuredJerseys.map((jersey) => (
-                <JerseyCard key={jersey.id} jersey={jersey} locale={locale} />
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {page.featuredJerseys.map((jersey, i) => (
+                <div
+                  key={jersey.id}
+                  className="animate-fade-up"
+                  style={{ animationDelay: `${i * 80}ms`, animationFillMode: 'both', opacity: 0 }}
+                >
+                  <JerseyCard jersey={jersey} locale={locale} />
+                </div>
               ))}
             </div>
           </div>
         </section>
       )}
+
+      {/* ─── CTA STRIP ────────────────────────────────────── */}
+      <section className="relative overflow-hidden bg-gold py-12 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-[10px] uppercase tracking-[0.3em] text-black/60 font-black mb-2">Limited Edition</p>
+          <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter text-black leading-tight mb-6">
+            Official 2026 Kits.<br />All 32 Nations.
+          </h2>
+          <Link
+            href={`/${locale}/shop`}
+            className="inline-flex items-center gap-3 bg-black text-white font-black px-10 py-4 text-sm uppercase tracking-[0.15em] hover:bg-zinc-900 transition-all duration-200"
+          >
+            Shop All Jerseys
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </Link>
+        </div>
+      </section>
+
     </div>
   )
 }

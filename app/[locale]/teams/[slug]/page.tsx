@@ -28,37 +28,66 @@ export default async function TeamPage({
   if (!team) notFound()
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <Link href={`/${locale}/shop`} className="text-sm text-indigo-600 hover:underline mb-8 inline-block">
-        {t[locale].backToShop}
-      </Link>
+    <div className="min-h-screen bg-background">
+
+      {/* Back nav */}
+      <div className="border-b border-[rgba(255,255,255,0.05)] bg-[#0c0c0c] py-3 px-4">
+        <div className="max-w-7xl mx-auto">
+          <Link
+            href={`/${locale}/shop`}
+            className="inline-flex items-center gap-2 text-zinc-600 hover:text-gold transition-colors text-[10px] font-bold uppercase tracking-widest"
+          >
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            {t[locale].backToShop}
+          </Link>
+        </div>
+      </div>
 
       {/* Team header */}
-      <div className="flex items-center gap-4 mb-10 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
-        <span className="text-6xl">{team.flagEmoji}</span>
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">{team.name}</h1>
-          <div className="flex items-center gap-4 mt-1 text-sm text-gray-500">
-            <span>{team.country}</span>
-            <span>•</span>
-            <span>{t[locale].confederation}: <strong className="text-gray-700">{team.confederation}</strong></span>
+      <div className="border-b border-[rgba(255,255,255,0.06)] bg-[#0c0c0c] py-12 px-4">
+        <div className="max-w-7xl mx-auto flex items-center gap-6">
+          <span className="text-7xl drop-shadow-lg">{team.flagEmoji}</span>
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-gold font-black mb-1">
+              {team.confederation}
+            </p>
+            <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tighter text-white leading-none">
+              {team.name}
+            </h1>
+            <p className="text-zinc-600 text-sm mt-1">{team.country}</p>
           </div>
         </div>
       </div>
 
-      {team.jerseys.length === 0 ? (
-        <p className="text-gray-500 text-center py-20">{t[locale].noJerseys}</p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {team.jerseys.map((jersey) => (
-            <JerseyCard
-              key={jersey.id}
-              jersey={{ ...jersey, team: { id: team.id, name: team.name, slug: team.slug, flagEmoji: team.flagEmoji, country: team.country } }}
-              locale={locale}
-            />
-          ))}
-        </div>
-      )}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {team.jerseys.length === 0 ? (
+          <div className="text-center py-24">
+            <p className="text-zinc-700 text-sm uppercase tracking-widest">{t[locale].noJerseys}</p>
+          </div>
+        ) : (
+          <>
+            <p className="text-[10px] uppercase tracking-[0.25em] text-zinc-700 font-black mb-6">
+              {team.jerseys.length} {team.jerseys.length === 1 ? 'kit' : 'kits'} available
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {team.jerseys.map((jersey, i) => (
+                <div
+                  key={jersey.id}
+                  className="animate-fade-up"
+                  style={{ animationDelay: `${i * 80}ms`, animationFillMode: 'both', opacity: 0 }}
+                >
+                  <JerseyCard
+                    jersey={{ ...jersey, team: { id: team.id, name: team.name, slug: team.slug, flagEmoji: team.flagEmoji, country: team.country } }}
+                    locale={locale}
+                  />
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   )
 }
