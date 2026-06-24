@@ -18,6 +18,14 @@ export async function fetchData<T>(query: string, variables: Record<string, unkn
 
 export type Locale = 'en' | 'de' | 'fr'
 export type KitType = 'HOME' | 'AWAY'
+
+export interface KitVariant {
+  kitType: KitType
+  variantName: string
+  price: number
+  imageUrl: string | null
+  material: string | null
+}
 export type JerseySize = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL'
 export type Continent = 'EUROPE' | 'SOUTH_AMERICA' | 'NORTH_AMERICA' | 'AFRICA' | 'ASIA' | 'OCEANIA' | 'GLOBAL'
 
@@ -58,7 +66,7 @@ export interface Team {
   collections: Collection[]
 }
 
-export type JerseyVariant = Pick<Jersey, 'id' | 'name' | 'slug' | 'price' | 'currency' | 'imageUrl' | 'kitType' | 'sizes'>
+export type JerseyVariant = Pick<Jersey, 'id' | 'name' | 'slug' | 'price' | 'currency' | 'imageUrl' | 'kitType' | 'sizes' | 'team'>
 
 export interface Jersey {
   id: string
@@ -72,10 +80,10 @@ export interface Jersey {
   material?: string | null
   description?: { html: string } | null
   seo?: Seo | null
-  team?: Pick<Team, 'id' | 'name' | 'slug' | 'flagEmoji' | 'country'> & { jerseys?: JerseyVariant[] }
-  collection?: Pick<Collection, 'id' | 'name' | 'slug'> & {
-    jerseys?: Pick<Jersey, 'id' | 'name' | 'slug' | 'price' | 'currency' | 'imageUrl' | 'kitType' | 'sizes' | 'team'>[]
-  } | null
+  variants?: KitVariant[]
+  relatedJerseys?: JerseyVariant[]
+  team?: Pick<Team, 'id' | 'name' | 'slug' | 'flagEmoji' | 'country'>
+  collection?: Pick<Collection, 'id' | 'name' | 'slug'> | null
 }
 
 export interface Collection {
@@ -175,14 +183,10 @@ export const GET_JERSEY = gql`
       id name slug price currency imageUrl kitType sizes material
       description { html }
       ${SEO_FIELDS}
-      team {
-        id name slug flagEmoji country
-        jerseys(locales: [$locale, en]) { id name slug price currency imageUrl kitType sizes }
-      }
-      collection {
-        id name slug
-        jerseys(first: 8, locales: [$locale, en]) { ${JERSEY_CARD_FIELDS} }
-      }
+      team { id name slug flagEmoji country }
+      collection { id name slug }
+      variants { kitType variantName price imageUrl material }
+      relatedJerseys { ${JERSEY_CARD_FIELDS} }
     }
   }
 `
