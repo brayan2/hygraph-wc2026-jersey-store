@@ -6,6 +6,7 @@ import { t, type Locale } from '@/lib/i18n'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import KitSwitcher from '@/components/KitSwitcher'
 
 export async function generateStaticParams() {
   try {
@@ -48,32 +49,23 @@ export default async function JerseyPage({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-16">
 
-          {/* ─── IMAGE PANEL ──────────────────────────────── */}
+          {/* ─── IMAGE PANEL + KIT SWITCHER ───────────────── */}
           <div className="relative">
             <div className="sticky top-24">
-              <div className="relative aspect-square bg-[#0e0e0e] border border-[rgba(255,255,255,0.06)] overflow-hidden">
-                {jersey.imageUrl ? (
-                  <Image
-                    src={jersey.imageUrl}
-                    alt={jersey.name}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    priority
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-8xl opacity-10">👕</div>
-                )}
-
-                {/* Kit type */}
-                <div className={`absolute top-4 left-4 px-3 py-1 text-[9px] font-black uppercase tracking-[0.2em] ${
-                  jersey.kitType === 'HOME'
-                    ? 'bg-gold text-black'
-                    : 'bg-white/10 backdrop-blur-sm text-white/80 border border-white/15'
-                }`}>
-                  {jersey.kitType === 'HOME' ? t[locale].homeKit : t[locale].awayKit}
-                </div>
-              </div>
+              <KitSwitcher
+                current={{
+                  id: jersey.id,
+                  name: jersey.name,
+                  slug: jersey.slug,
+                  price: jersey.price,
+                  currency: jersey.currency,
+                  imageUrl: jersey.imageUrl,
+                  kitType: jersey.kitType,
+                  sizes: jersey.sizes,
+                }}
+                variants={jersey.team?.jerseys ?? [{ id: jersey.id, name: jersey.name, slug: jersey.slug, price: jersey.price, currency: jersey.currency, imageUrl: jersey.imageUrl, kitType: jersey.kitType, sizes: jersey.sizes }]}
+                locale={locale}
+              />
             </div>
           </div>
 
@@ -165,51 +157,63 @@ export default async function JerseyPage({
           </div>
         </div>
 
-        {/* ─── RELATED JERSEYS ────────────────────────────── */}
-        {jersey.relatedJerseys && jersey.relatedJerseys.length > 0 && (
-          <div className="mt-24 border-t border-[rgba(255,255,255,0.06)] pt-16">
-            <p className="text-[10px] uppercase tracking-[0.3em] text-gold font-black mb-3">{t[locale].youMayAlsoLike}</p>
-            <h2 className="text-2xl font-black uppercase tracking-tight text-white mb-8">
-              {t[locale].relatedProducts}
-            </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {jersey.relatedJerseys.map((rel, i) => (
-                <Link key={rel.id} href={`/${locale}/jerseys/${rel.slug}`} className="group block">
-                  <div
-                    className="animate-fade-up"
-                    style={{ animationDelay: `${i * 60}ms`, animationFillMode: 'both', opacity: 0 }}
-                  >
-                    <div className="relative aspect-square bg-[#0e0e0e] border border-[rgba(255,255,255,0.06)] overflow-hidden mb-3 group-hover:border-gold/20 transition-all duration-300">
-                      {rel.imageUrl ? (
-                        <Image
-                          src={rel.imageUrl}
-                          alt={rel.name}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-500"
-                          sizes="25vw"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-4xl opacity-10">👕</div>
-                      )}
-                      <div className={`absolute top-2 left-2 px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider ${
-                        rel.kitType === 'HOME' ? 'bg-gold text-black' : 'bg-white/10 text-white border border-white/15'
-                      }`}>
-                        {rel.kitType === 'HOME' ? t[locale].homeKit : t[locale].awayKit}
-                      </div>
-                    </div>
-                    {rel.team && (
-                      <p className="text-[9px] uppercase tracking-widest text-zinc-600 mb-0.5">
-                        {rel.team.flagEmoji} {rel.team.name}
-                      </p>
-                    )}
-                    <p className="text-xs font-bold text-zinc-400 group-hover:text-gold transition-colors truncate mb-1">{rel.name}</p>
-                    <p className="text-sm font-black text-gold">{rel.currency} {rel.price.toFixed(2)}</p>
-                  </div>
+        {/* ─── RELATED FROM COLLECTION ────────────────────── */}
+        {(() => {
+          const related = (jersey.collection?.jerseys ?? []).filter((r) => r.id !== jersey.id)
+          if (related.length === 0) return null
+          return (
+            <div className="mt-24 border-t border-[rgba(255,255,255,0.06)] pt-16">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-gold font-black mb-3">{t[locale].youMayAlsoLike}</p>
+              <div className="flex items-end justify-between mb-8">
+                <h2 className="text-2xl font-black uppercase tracking-tight text-white">
+                  {jersey.collection?.name}
+                </h2>
+                <Link
+                  href={`/${locale}/collections/${jersey.collection?.slug}`}
+                  className="text-[10px] text-zinc-600 hover:text-gold transition-colors font-black uppercase tracking-widest"
+                >
+                  {t[locale].viewAll} →
                 </Link>
-              ))}
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {related.slice(0, 4).map((rel, i) => (
+                  <Link key={rel.id} href={`/${locale}/jerseys/${rel.slug}`} className="group block">
+                    <div
+                      className="animate-fade-up"
+                      style={{ animationDelay: `${i * 60}ms`, animationFillMode: 'both', opacity: 0 }}
+                    >
+                      <div className="relative aspect-square bg-[#0e0e0e] border border-[rgba(255,255,255,0.06)] overflow-hidden mb-3 group-hover:border-gold/20 transition-all duration-300">
+                        {rel.imageUrl ? (
+                          <Image
+                            src={rel.imageUrl}
+                            alt={rel.name}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            sizes="25vw"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-4xl opacity-10">👕</div>
+                        )}
+                        <div className={`absolute top-2 left-2 px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider ${
+                          rel.kitType === 'HOME' ? 'bg-gold text-black' : 'bg-white/10 text-white border border-white/15'
+                        }`}>
+                          {rel.kitType === 'HOME' ? t[locale].homeKit : t[locale].awayKit}
+                        </div>
+                      </div>
+                      {rel.team && (
+                        <p className="text-[9px] uppercase tracking-widest text-zinc-600 mb-0.5">
+                          {rel.team.flagEmoji} {rel.team.name}
+                        </p>
+                      )}
+                      <p className="text-xs font-bold text-zinc-400 group-hover:text-gold transition-colors truncate mb-1">{rel.name}</p>
+                      <p className="text-sm font-black text-gold">{rel.currency} {rel.price.toFixed(2)}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )
+        })()}
 
       </div>
     </div>

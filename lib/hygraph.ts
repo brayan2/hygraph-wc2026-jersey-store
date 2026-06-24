@@ -58,6 +58,8 @@ export interface Team {
   collections: Collection[]
 }
 
+export type JerseyVariant = Pick<Jersey, 'id' | 'name' | 'slug' | 'price' | 'currency' | 'imageUrl' | 'kitType' | 'sizes'>
+
 export interface Jersey {
   id: string
   name: string
@@ -70,9 +72,10 @@ export interface Jersey {
   material?: string | null
   description?: { html: string } | null
   seo?: Seo | null
-  team?: Pick<Team, 'id' | 'name' | 'slug' | 'flagEmoji' | 'country'>
-  collection?: Pick<Collection, 'id' | 'name' | 'slug'> | null
-  relatedJerseys?: Pick<Jersey, 'id' | 'name' | 'slug' | 'price' | 'currency' | 'imageUrl' | 'kitType' | 'sizes' | 'team'>[]
+  team?: Pick<Team, 'id' | 'name' | 'slug' | 'flagEmoji' | 'country'> & { jerseys?: JerseyVariant[] }
+  collection?: Pick<Collection, 'id' | 'name' | 'slug'> & {
+    jerseys?: Pick<Jersey, 'id' | 'name' | 'slug' | 'price' | 'currency' | 'imageUrl' | 'kitType' | 'sizes' | 'team'>[]
+  } | null
 }
 
 export interface Collection {
@@ -142,7 +145,7 @@ export const GET_COLLECTION = gql`
 
 export const GET_TEAMS = gql`
   query GetTeams($locale: Locale!) {
-    teams(locales: [$locale, en]) {
+    teams(first: 50, locales: [$locale, en]) {
       id name slug country flagEmoji confederation
     }
   }
@@ -153,14 +156,14 @@ export const GET_TEAM = gql`
     team(where: { slug: $slug }, locales: [$locale, en]) {
       id name slug country flagEmoji confederation
       ${SEO_FIELDS}
-      jerseys { id name slug price currency imageUrl kitType sizes }
+      jerseys(first: 10, locales: [$locale, en]) { id name slug price currency imageUrl kitType sizes }
     }
   }
 `
 
 export const GET_JERSEYS = gql`
   query GetJerseys($locale: Locale!) {
-    jerseys(locales: [$locale, en]) {
+    jerseys(first: 50, locales: [$locale, en]) {
       ${JERSEY_CARD_FIELDS}
     }
   }
@@ -172,9 +175,14 @@ export const GET_JERSEY = gql`
       id name slug price currency imageUrl kitType sizes material
       description { html }
       ${SEO_FIELDS}
-      collection { id name slug }
-      team { id name slug flagEmoji country }
-      relatedJerseys { ${JERSEY_CARD_FIELDS} }
+      team {
+        id name slug flagEmoji country
+        jerseys(locales: [$locale, en]) { id name slug price currency imageUrl kitType sizes }
+      }
+      collection {
+        id name slug
+        jerseys(first: 8, locales: [$locale, en]) { ${JERSEY_CARD_FIELDS} }
+      }
     }
   }
 `
