@@ -1,6 +1,6 @@
 import { GraphQLClient, gql } from 'graphql-request'
 
-const endpoint = process.env.HYGRAPH_ENDPOINT!
+const endpoint = process.env.HYGRAPH_ENDPOINT ?? ''
 
 export const hygraph = new GraphQLClient(endpoint)
 

@@ -6,8 +6,12 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
-  const { teams } = await hygraph.request<{ teams: Team[] }>(GET_TEAMS, { locale: 'en' })
-  return teams.map((team) => ({ slug: team.slug }))
+  try {
+    const { teams } = await hygraph.request<{ teams: Team[] }>(GET_TEAMS, { locale: 'en' })
+    return teams.map((team) => ({ slug: team.slug }))
+  } catch {
+    return []
+  }
 }
 
 export default async function TeamPage({

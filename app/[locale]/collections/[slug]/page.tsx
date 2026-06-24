@@ -7,8 +7,12 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
-  const { collections } = await hygraph.request<{ collections: Collection[] }>(GET_COLLECTIONS, { locale: 'en' })
-  return collections.map((c) => ({ slug: c.slug }))
+  try {
+    const { collections } = await hygraph.request<{ collections: Collection[] }>(GET_COLLECTIONS, { locale: 'en' })
+    return collections.map((c) => ({ slug: c.slug }))
+  } catch {
+    return []
+  }
 }
 
 export default async function CollectionPage({

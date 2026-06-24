@@ -6,8 +6,12 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
-  const { jerseys } = await hygraph.request<{ jerseys: Jersey[] }>(GET_JERSEYS, { locale: 'en' })
-  return jerseys.map((j) => ({ slug: j.slug }))
+  try {
+    const { jerseys } = await hygraph.request<{ jerseys: Jersey[] }>(GET_JERSEYS, { locale: 'en' })
+    return jerseys.map((j) => ({ slug: j.slug }))
+  } catch {
+    return []
+  }
 }
 
 export default async function JerseyPage({
