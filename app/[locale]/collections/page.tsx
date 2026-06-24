@@ -1,13 +1,14 @@
 export const dynamic = 'force-dynamic'
 
-import { hygraph, GET_COLLECTIONS } from '@/lib/hygraph'
+import { fetchData, GET_COLLECTIONS } from '@/lib/hygraph'
 import type { Collection } from '@/lib/hygraph'
 import { t, type Locale } from '@/lib/i18n'
 import CollectionCard from '@/components/CollectionCard'
 
 export default async function CollectionsPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params
-  const { collections } = await hygraph.request<{ collections: Collection[] }>(GET_COLLECTIONS, { locale })
+  const data = await fetchData<{ collections: Collection[] }>(GET_COLLECTIONS, { locale })
+  const collections = data?.collections ?? []
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

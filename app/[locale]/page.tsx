@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { hygraph, GET_HOMEPAGE } from '@/lib/hygraph'
+import { fetchData, GET_HOMEPAGE } from '@/lib/hygraph'
 import type { Homepage } from '@/lib/hygraph'
 import { t, type Locale } from '@/lib/i18n'
 import JerseyCard from '@/components/JerseyCard'
@@ -10,11 +10,19 @@ import CollectionCard from '@/components/CollectionCard'
 
 export default async function HomePage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params
-  const { homepages } = await hygraph.request<{ homepages: Homepage[] }>(GET_HOMEPAGE, { locale })
-  const page = homepages[0]
+  const data = await fetchData<{ homepages: Homepage[] }>(GET_HOMEPAGE, { locale })
+  const page = data?.homepages?.[0]
 
   if (!page) {
-    return <div className="p-8 text-center text-gray-400">Homepage content not found.</div>
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center text-center px-4">
+        <div>
+          <p className="text-4xl mb-4">⚽</p>
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">World Cup 2026 Jersey Store</h1>
+          <p className="text-gray-500">Content loading — check back soon.</p>
+        </div>
+      </div>
+    )
   }
 
   const hero = page.hero

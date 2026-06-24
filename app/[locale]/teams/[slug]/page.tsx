@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic'
 
-import { hygraph, GET_TEAM, GET_TEAMS } from '@/lib/hygraph'
+import { fetchData, GET_TEAM, GET_TEAMS } from '@/lib/hygraph'
 import type { Team } from '@/lib/hygraph'
 import { t, type Locale } from '@/lib/i18n'
 import JerseyCard from '@/components/JerseyCard'
@@ -9,8 +9,8 @@ import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
   try {
-    const { teams } = await hygraph.request<{ teams: Team[] }>(GET_TEAMS, { locale: 'en' })
-    return teams.map((team) => ({ slug: team.slug }))
+    const data = await fetchData<{ teams: Team[] }>(GET_TEAMS, { locale: 'en' })
+    return data?.teams.map((team) => ({ slug: team.slug })) ?? []
   } catch {
     return []
   }
@@ -22,7 +22,8 @@ export default async function TeamPage({
   params: Promise<{ locale: Locale; slug: string }>
 }) {
   const { locale, slug } = await params
-  const { team } = await hygraph.request<{ team: Team | null }>(GET_TEAM, { slug, locale })
+  const data = await fetchData<{ team: Team | null }>(GET_TEAM, { slug, locale })
+  const team = data?.team ?? null
 
   if (!team) notFound()
 

@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic'
 
-import { hygraph, GET_JERSEY, GET_JERSEYS } from '@/lib/hygraph'
+import { fetchData, GET_JERSEY, GET_JERSEYS } from '@/lib/hygraph'
 import type { Jersey } from '@/lib/hygraph'
 import { t, type Locale } from '@/lib/i18n'
 import Image from 'next/image'
@@ -9,8 +9,8 @@ import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
   try {
-    const { jerseys } = await hygraph.request<{ jerseys: Jersey[] }>(GET_JERSEYS, { locale: 'en' })
-    return jerseys.map((j) => ({ slug: j.slug }))
+    const data = await fetchData<{ jerseys: Jersey[] }>(GET_JERSEYS, { locale: 'en' })
+    return data?.jerseys.map((j) => ({ slug: j.slug })) ?? []
   } catch {
     return []
   }
@@ -22,7 +22,8 @@ export default async function JerseyPage({
   params: Promise<{ locale: Locale; slug: string }>
 }) {
   const { locale, slug } = await params
-  const { jersey } = await hygraph.request<{ jersey: Jersey | null }>(GET_JERSEY, { slug, locale })
+  const data = await fetchData<{ jersey: Jersey | null }>(GET_JERSEY, { slug, locale })
+  const jersey = data?.jersey ?? null
 
   if (!jersey) notFound()
 

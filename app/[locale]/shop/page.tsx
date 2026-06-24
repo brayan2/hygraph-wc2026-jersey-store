@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic'
 
-import { hygraph, GET_JERSEYS, GET_TEAMS } from '@/lib/hygraph'
+import { fetchData, GET_JERSEYS, GET_TEAMS } from '@/lib/hygraph'
 import type { Jersey, Team } from '@/lib/hygraph'
 import { t, type Locale } from '@/lib/i18n'
 import JerseyCard from '@/components/JerseyCard'
@@ -9,10 +9,13 @@ import Link from 'next/link'
 export default async function ShopPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params
 
-  const [{ jerseys }, { teams }] = await Promise.all([
-    hygraph.request<{ jerseys: Jersey[] }>(GET_JERSEYS, { locale }),
-    hygraph.request<{ teams: Team[] }>(GET_TEAMS, { locale }),
+  const [jerseysData, teamsData] = await Promise.all([
+    fetchData<{ jerseys: Jersey[] }>(GET_JERSEYS, { locale }),
+    fetchData<{ teams: Team[] }>(GET_TEAMS, { locale }),
   ])
+
+  const jerseys = jerseysData?.jerseys ?? []
+  const teams = teamsData?.teams ?? []
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic'
 
-import { hygraph, GET_COLLECTION, GET_COLLECTIONS } from '@/lib/hygraph'
+import { fetchData, GET_COLLECTION, GET_COLLECTIONS } from '@/lib/hygraph'
 import type { Collection } from '@/lib/hygraph'
 import { t, continentLabels, type Locale } from '@/lib/i18n'
 import JerseyCard from '@/components/JerseyCard'
@@ -10,8 +10,8 @@ import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
   try {
-    const { collections } = await hygraph.request<{ collections: Collection[] }>(GET_COLLECTIONS, { locale: 'en' })
-    return collections.map((c) => ({ slug: c.slug }))
+    const data = await fetchData<{ collections: Collection[] }>(GET_COLLECTIONS, { locale: 'en' })
+    return data?.collections.map((c) => ({ slug: c.slug })) ?? []
   } catch {
     return []
   }
@@ -23,7 +23,8 @@ export default async function CollectionPage({
   params: Promise<{ locale: Locale; slug: string }>
 }) {
   const { locale, slug } = await params
-  const { collection } = await hygraph.request<{ collection: Collection | null }>(GET_COLLECTION, { slug, locale })
+  const data = await fetchData<{ collection: Collection | null }>(GET_COLLECTION, { slug, locale })
+  const collection = data?.collection
 
   if (!collection) notFound()
 

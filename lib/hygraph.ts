@@ -2,7 +2,19 @@ import { GraphQLClient, gql } from 'graphql-request'
 
 const endpoint = process.env.HYGRAPH_ENDPOINT ?? ''
 
-export const hygraph = new GraphQLClient(endpoint)
+// Use a placeholder URL so GraphQLClient constructs without throwing;
+// actual requests will fail gracefully if the env var is missing.
+export const hygraph = new GraphQLClient(endpoint || 'http://localhost:1')
+
+export async function fetchData<T>(query: string, variables: Record<string, unknown>): Promise<T | null> {
+  if (!endpoint) return null
+  try {
+    return await hygraph.request<T>(query, variables)
+  } catch (e) {
+    console.error('[Hygraph] fetch error:', e)
+    return null
+  }
+}
 
 export type Locale = 'en' | 'de' | 'fr'
 export type KitType = 'HOME' | 'AWAY'
