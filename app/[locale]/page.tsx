@@ -19,10 +19,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
         <div className="animate-fade-up">
           <p className="text-5xl mb-6">⚽</p>
           <h1 className="text-3xl font-black text-white uppercase tracking-tight mb-3">
-            World Cup 2026<br />
-            <span className="text-gradient-gold">Jersey Store</span>
+            {t[locale].heroTitle}<br />
+            <span className="text-gradient-gold">{t[locale].allJerseys}</span>
           </h1>
-          <p className="text-zinc-600 text-sm uppercase tracking-widest">Content loading — check back soon</p>
+          <p className="text-zinc-600 text-sm uppercase tracking-widest">{t[locale].contentLoading}</p>
         </div>
       </div>
     )
@@ -99,7 +99,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
 
         {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-fade-in delay-700">
-          <span className="text-zinc-700 text-[9px] uppercase tracking-[0.3em] font-bold">Scroll</span>
+          <span className="text-zinc-700 text-[9px] uppercase tracking-[0.3em] font-bold">{t[locale].scroll}</span>
           <div className="w-px h-10 bg-gradient-to-b from-zinc-700 to-transparent" />
         </div>
       </section>
@@ -109,10 +109,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-[rgba(255,255,255,0.06)]">
             {[
-              { num: '32', label: 'Nations' },
-              { num: '10', label: 'Teams' },
-              { num: '20', label: 'Jerseys' },
-              { num: '5', label: 'Collections' },
+              { num: '32', label: t[locale].statsNations },
+              { num: '13', label: t[locale].statsTeams },
+              { num: '13', label: t[locale].statsJerseys },
+              { num: '5', label: t[locale].statsCollections },
             ].map((s) => (
               <div key={s.label} className="py-6 px-6 sm:px-10 text-center">
                 <div className="text-2xl sm:text-3xl font-black text-gradient-gold mb-1">{s.num}</div>
@@ -200,7 +200,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
             <div className="flex items-end justify-between mb-10">
               <div>
                 <p className="text-[10px] uppercase tracking-[0.3em] text-gold font-black mb-2">
-                  New Arrivals
+                  {t[locale].newArrivals}
                 </p>
                 <h2 className="text-3xl sm:text-4xl font-black text-white uppercase tracking-tight leading-none">
                   {t[locale].featuredJerseys}
@@ -235,15 +235,15 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* ─── CTA STRIP ────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-gold py-12 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-black/60 font-black mb-2">Limited Edition</p>
+          <p className="text-[10px] uppercase tracking-[0.3em] text-black/60 font-black mb-2">{t[locale].limitedEdition}</p>
           <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter text-black leading-tight mb-6">
-            Official 2026 Kits.<br />All 32 Nations.
+            {t[locale].ctaLine1}<br />{t[locale].ctaLine2}
           </h2>
           <Link
             href={`/${locale}/shop`}
             className="inline-flex items-center gap-3 bg-black text-white font-black px-10 py-4 text-sm uppercase tracking-[0.15em] hover:bg-zinc-900 transition-all duration-200"
           >
-            Shop All Jerseys
+            {t[locale].shopAllJerseys}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>

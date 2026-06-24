@@ -69,7 +69,7 @@ export default async function TeamPage({
         ) : (
           <>
             <p className="text-[10px] uppercase tracking-[0.25em] text-zinc-700 font-black mb-6">
-              {team.jerseys.length} {team.jerseys.length === 1 ? 'kit' : 'kits'} available
+              {team.jerseys.length} {team.jerseys.length === 1 ? t[locale].kit : t[locale].kits} {t[locale].available}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {team.jerseys.map((jersey, i) => (

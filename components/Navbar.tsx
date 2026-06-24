@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { locales, type Locale } from '@/lib/i18n'
+import { locales, t, type Locale } from '@/lib/i18n'
 
 export default function Navbar({ locale }: { locale: Locale }) {
   const pathname = usePathname()
@@ -31,7 +31,7 @@ export default function Navbar({ locale }: { locale: Locale }) {
                 WC 2026
               </span>
               <span className="text-[9px] text-gold font-bold tracking-[0.25em] uppercase">
-                Official Store
+                {t[locale].officialStore}
               </span>
             </div>
           </Link>
@@ -39,9 +39,9 @@ export default function Navbar({ locale }: { locale: Locale }) {
           {/* Nav links */}
           <div className="hidden md:flex items-center gap-8">
             {[
-              { href: `/${locale}`, label: 'Home' },
-              { href: `/${locale}/shop`, label: 'Shop' },
-              { href: `/${locale}/collections`, label: 'Collections' },
+              { href: `/${locale}`, label: t[locale].home },
+              { href: `/${locale}/shop`, label: t[locale].shop },
+              { href: `/${locale}/collections`, label: t[locale].collections },
             ].map((link) => (
               <Link
                 key={link.href}

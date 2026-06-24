@@ -110,7 +110,7 @@ export default async function JerseyPage({
             <div className="mb-8">
               <div className="flex items-center justify-between mb-4">
                 <p className="text-[10px] uppercase tracking-[0.25em] font-black text-zinc-500">{t[locale].sizes}</p>
-                <span className="text-[10px] text-zinc-700 uppercase tracking-wider cursor-pointer hover:text-zinc-500 transition-colors">Size Guide</span>
+                <span className="text-[10px] text-zinc-700 uppercase tracking-wider cursor-pointer hover:text-zinc-500 transition-colors">{t[locale].sizeGuide}</span>
               </div>
               <div className="grid grid-cols-5 gap-2">
                 {jersey.sizes.map((size) => (
@@ -151,9 +151,9 @@ export default async function JerseyPage({
             {/* Specs */}
             <div className="mt-8 space-y-3">
               {[
-                { icon: '✓', text: 'Official FIFA Licensed Product' },
-                { icon: '✓', text: 'Free shipping on orders over €75' },
-                { icon: '✓', text: '30-day returns' },
+                { icon: '✓', text: t[locale].officialLicense },
+                { icon: '✓', text: t[locale].freeShipping },
+                { icon: '✓', text: t[locale].returns },
               ].map((item) => (
                 <div key={item.text} className="flex items-center gap-3 text-xs text-zinc-700">
                   <span className="text-gold font-black">{item.icon}</span>
@@ -168,7 +168,7 @@ export default async function JerseyPage({
         {/* ─── RELATED JERSEYS ────────────────────────────── */}
         {jersey.relatedJerseys && jersey.relatedJerseys.length > 0 && (
           <div className="mt-24 border-t border-[rgba(255,255,255,0.06)] pt-16">
-            <p className="text-[10px] uppercase tracking-[0.3em] text-gold font-black mb-3">You May Also Like</p>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-gold font-black mb-3">{t[locale].youMayAlsoLike}</p>
             <h2 className="text-2xl font-black uppercase tracking-tight text-white mb-8">
               {t[locale].relatedProducts}
             </h2>

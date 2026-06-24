@@ -24,13 +24,13 @@ export default async function ShopPage({ params }: { params: Promise<{ locale: L
       <div className="border-b border-[rgba(255,255,255,0.06)] bg-[#0c0c0c] py-12 px-4">
         <div className="max-w-7xl mx-auto">
           <p className="text-[10px] uppercase tracking-[0.3em] text-gold font-black mb-2">
-            FIFA World Cup 2026™
+            {t[locale].heroTitle}
           </p>
           <h1 className="text-4xl sm:text-6xl font-black uppercase tracking-tighter text-white leading-none mb-3">
             {t[locale].allJerseys}
           </h1>
           <p className="text-zinc-600 text-sm">
-            {jerseys.length} jerseys · {teams.length} national teams
+            {jerseys.length} {t[locale].statsJerseys} · {teams.length} {t[locale].nationalTeams}
           </p>
         </div>
       </div>

@@ -50,6 +50,37 @@ export const t: Record<Locale, Record<string, string>> = {
     browseByContinent: 'Browse by Region',
     productDetailPage: 'Product Details',
     wishlist: 'Save to Wishlist',
+    // Navbar & footer
+    officialStore: 'Official Store',
+    copyright: '© 2026 FIFA World Cup™',
+    poweredBy: 'Powered by',
+    // Homepage
+    scroll: 'Scroll',
+    statsNations: 'Nations',
+    statsTeams: 'Teams',
+    statsJerseys: 'Jerseys',
+    statsCollections: 'Collections',
+    newArrivals: 'New Arrivals',
+    limitedEdition: 'Limited Edition',
+    ctaLine1: 'Official 2026 Kits.',
+    ctaLine2: 'All 32 Nations.',
+    shopAllJerseys: 'Shop All Jerseys',
+    contentLoading: 'Content loading — check back soon',
+    // Shop page
+    nationalTeams: 'national teams',
+    // Collections page
+    shopByContinent: 'Shop by Continent',
+    noCollections: 'No collections yet',
+    // Jersey detail
+    sizeGuide: 'Size Guide',
+    officialLicense: 'Official FIFA Licensed Product',
+    freeShipping: 'Free shipping on orders over €75',
+    returns: '30-day returns',
+    youMayAlsoLike: 'You May Also Like',
+    // Team page
+    kit: 'kit',
+    kits: 'kits',
+    available: 'available',
   },
   de: {
     home: 'Start',
@@ -81,6 +112,37 @@ export const t: Record<Locale, Record<string, string>> = {
     browseByContinent: 'Nach Region durchsuchen',
     productDetailPage: 'Produktdetails',
     wishlist: 'Zur Wunschliste hinzufügen',
+    // Navbar & footer
+    officialStore: 'Offizieller Shop',
+    copyright: '© 2026 FIFA-Weltmeisterschaft™',
+    poweredBy: 'Betrieben von',
+    // Homepage
+    scroll: 'Scrollen',
+    statsNations: 'Nationen',
+    statsTeams: 'Teams',
+    statsJerseys: 'Trikots',
+    statsCollections: 'Kollektionen',
+    newArrivals: 'Neuankömmlinge',
+    limitedEdition: 'Limitierte Auflage',
+    ctaLine1: 'Offizielle Trikots 2026.',
+    ctaLine2: 'Alle 32 Nationen.',
+    shopAllJerseys: 'Alle Trikots kaufen',
+    contentLoading: 'Inhalte werden geladen – bald verfügbar',
+    // Shop page
+    nationalTeams: 'Nationalmannschaften',
+    // Collections page
+    shopByContinent: 'Nach Kontinent einkaufen',
+    noCollections: 'Noch keine Kollektionen',
+    // Jersey detail
+    sizeGuide: 'Größentabelle',
+    officialLicense: 'Offiziell von der FIFA lizenziertes Produkt',
+    freeShipping: 'Kostenloser Versand ab 75 €',
+    returns: '30 Tage Rückgabe',
+    youMayAlsoLike: 'Das könnte Ihnen gefallen',
+    // Team page
+    kit: 'Trikot',
+    kits: 'Trikots',
+    available: 'verfügbar',
   },
   fr: {
     home: 'Accueil',
@@ -112,5 +174,36 @@ export const t: Record<Locale, Record<string, string>> = {
     browseByContinent: 'Parcourir par région',
     productDetailPage: 'Détails du produit',
     wishlist: 'Ajouter à la liste de souhaits',
+    // Navbar & footer
+    officialStore: 'Boutique Officielle',
+    copyright: '© 2026 Coupe du Monde FIFA™',
+    poweredBy: 'Propulsé par',
+    // Homepage
+    scroll: 'Défiler',
+    statsNations: 'Nations',
+    statsTeams: 'Équipes',
+    statsJerseys: 'Maillots',
+    statsCollections: 'Collections',
+    newArrivals: 'Nouveautés',
+    limitedEdition: 'Édition Limitée',
+    ctaLine1: 'Maillots Officiels 2026.',
+    ctaLine2: '32 Nations.',
+    shopAllJerseys: 'Acheter tous les maillots',
+    contentLoading: 'Contenu en chargement – revenez bientôt',
+    // Shop page
+    nationalTeams: 'équipes nationales',
+    // Collections page
+    shopByContinent: 'Acheter par Continent',
+    noCollections: 'Pas encore de collections',
+    // Jersey detail
+    sizeGuide: 'Guide des Tailles',
+    officialLicense: 'Produit officiel sous licence FIFA',
+    freeShipping: 'Livraison gratuite dès 75 €',
+    returns: 'Retours sous 30 jours',
+    youMayAlsoLike: 'Vous aimerez peut-être aussi',
+    // Team page
+    kit: 'maillot',
+    kits: 'maillots',
+    available: 'disponible',
   },
 }

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import Navbar from '@/components/Navbar'
-import { isValidLocale, type Locale } from '@/lib/i18n'
+import { isValidLocale, t, type Locale } from '@/lib/i18n'
 
 export async function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'de' }, { locale: 'fr' }]
@@ -27,16 +27,16 @@ export default async function LocaleLayout({
               <div className="w-8 h-8 rounded-full bg-gold flex items-center justify-center text-sm">⚽</div>
               <div>
                 <span className="text-white font-black text-sm uppercase tracking-widest block">WC 2026 Store</span>
-                <span className="text-zinc-600 text-xs">© 2026 FIFA World Cup™</span>
+                <span className="text-zinc-600 text-xs">{t[locale as Locale].copyright}</span>
               </div>
             </div>
             <div className="flex items-center gap-8 text-xs text-zinc-600 uppercase tracking-widest">
-              <a href={`/${locale}`} className="hover:text-gold transition-colors">Home</a>
-              <a href={`/${locale}/shop`} className="hover:text-gold transition-colors">Shop</a>
-              <a href={`/${locale}/collections`} className="hover:text-gold transition-colors">Collections</a>
+              <a href={`/${locale}`} className="hover:text-gold transition-colors">{t[locale as Locale].home}</a>
+              <a href={`/${locale}/shop`} className="hover:text-gold transition-colors">{t[locale as Locale].shop}</a>
+              <a href={`/${locale}/collections`} className="hover:text-gold transition-colors">{t[locale as Locale].collections}</a>
             </div>
             <span className="text-xs text-zinc-700">
-              Powered by{' '}
+              {t[locale as Locale].poweredBy}{' '}
               <a href="https://hygraph.com" className="text-gold hover:text-gold-light transition-colors font-medium" target="_blank" rel="noopener noreferrer">
                 Hygraph
               </a>
