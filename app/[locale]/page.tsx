@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import Link from 'next/link'
 import Image from 'next/image'
 import { hygraph, GET_HOMEPAGE } from '@/lib/hygraph'

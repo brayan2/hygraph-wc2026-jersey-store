@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { hygraph, GET_COLLECTIONS } from '@/lib/hygraph'
 import type { Collection } from '@/lib/hygraph'
 import { t, type Locale } from '@/lib/i18n'

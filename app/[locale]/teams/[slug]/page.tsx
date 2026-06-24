@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { hygraph, GET_TEAM, GET_TEAMS } from '@/lib/hygraph'
 import type { Team } from '@/lib/hygraph'
 import { t, type Locale } from '@/lib/i18n'
